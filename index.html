@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/video.js@7.2.4/dist/video-js.css" rel="stylesheet">
+</head>
+
+<body>
+    <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="MY_VIDEO_POSTER.jpg"
+        data-setup="{}"></video>
+    <br>
+
+    <p>Stream URL <input type="text" id="stream"></p>
+    <p>
+        <select name="drm" id="drm">
+            <option value="1">FAIRPLAY</option>
+            <option value="2">WIDEVINE</option>
+        </select>
+    </p>
+    <p>Certificate URL <input type="text" id="certificate"></p>
+    <p>License URL <input type="text" id="license"></p>
+    <p><button id="btn">load</button></p>
+
+    <script src="https://cdn.jsdelivr.net/npm/video.js@7.2.4/dist/video.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-eme@3.4.1/dist/videojs-contrib-eme.js"></script>
+    <script>
+        let player = videojs('my-video');
+        let drmVendor = document.querySelector("#drm");
+
+        player.eme();
+
+        document.querySelector('#btn').addEventListener('click', () => {
+            let drmVendorValue = drmVendor.options[drmVendor.selectedIndex].value;
+            let keySystems = {};
+            let type;
+            let src = document.querySelector("#stream").value;
+
+            if (drmVendor === "1") {
+                type = "application/x-mpegURL";
+                keySystems = {
+                    "com.apple.fps.1_0": {
+                        certificateUri: document.querySelector("#certificate").value,
+                        licenseUri: document.querySelector("#license").value
+                    }
+                };
+            } else {
+                type = "application/dash+xml";
+                keySystems = {
+                    "com.widevine.alpha": document.querySelector("#license").value
+                };
+            }
+
+            player.src({
+                src,
+                type,
+                keySystems
+            });
+
+            player.play();
+        });
+    </script>
+</body>
+
+</html>
