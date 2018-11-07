@@ -34,6 +34,7 @@
             let keySystems = {};
             let type;
             let src = document.querySelector("#stream").value;
+            let srcObj;
 
             if (drmVendor === "1") {
                 type = "application/x-mpegURL";
@@ -50,12 +51,17 @@
                 };
             }
 
-            player.src({
+
+            srcObj = {
                 src,
                 type,
                 keySystems
-            });
+            };
 
+
+            console.log("src object", srcObj);
+
+            player.src(srcObj);
             player.play();
         });
     </script>
