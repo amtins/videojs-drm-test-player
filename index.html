@@ -24,17 +24,17 @@
     <script src="https://cdn.jsdelivr.net/npm/video.js@7.2.4/dist/video.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-eme@3.4.1/dist/videojs-contrib-eme.js"></script>
     <script>
-        let player = videojs('my-video');
-        let drmVendor = document.querySelector("#drm");
+        var player = videojs('my-video');
+        var drmVendor = document.querySelector("#drm");
 
         player.eme();
 
-        document.querySelector('#btn').addEventListener('click', () => {
-            let drmVendorValue = drmVendor.options[drmVendor.selectedIndex].value;
-            let keySystems = {};
-            let type;
-            let src = document.querySelector("#stream").value;
-            let srcObj;
+        document.querySelector('#btn').addEventListener('click', function () {
+            var drmVendorValue = drmVendor.options[drmVendor.selectedIndex].value;
+            var keySystems = {};
+            var type;
+            var src = document.querySelector("#stream").value;
+            var srcObj;
 
             if (drmVendor === "1") {
                 type = "application/x-mpegURL";
@@ -53,9 +53,9 @@
 
 
             srcObj = {
-                src,
-                type,
-                keySystems
+                src: src,
+                type: type,
+                keySystems: keySystems
             };
 
 
