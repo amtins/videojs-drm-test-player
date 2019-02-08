@@ -6,18 +6,18 @@
 </head>
 
 <body>
-    <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="MY_VIDEO_POSTER.jpg"
+    <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" autoplay poster="MY_VIDEO_POSTER.jpg"
         data-setup="{}"></video>
     <br>
 
-    <p>Stream URL <input type="text" id="stream"></p>
+    <p>Stream URL <input type="text" id="stream"> autoplay <input type="checkbox" id="autoplay"></p>
     <p>
         <select name="drm" id="drm">
             <option value="1">FAIRPLAY</option>
             <option value="2">WIDEVINE</option>
         </select>
     </p>
-    <p>Certificate URL <input type="text" id="certificate"></p>
+    <p id="pCertificate">Certificate URL <input type="text" id="certificate"></p>
     <p>License URL <input type="text" id="license"></p>
     <p><button id="btn">load</button></p>
 
@@ -26,8 +26,19 @@
     <script>
         var player = videojs('my-video');
         var drmVendor = document.querySelector("#drm");
+        var pCertificate = document.querySelector("#pCertificate");
+        var autoplay = document.querySelector("#autoplay");
 
         player.eme();
+
+        drmVendor.addEventListener('change', function(e){
+            if(2 == drmVendor.options[drmVendor.selectedIndex].value){
+                pCertificate.style.display = "none"; 
+                return;
+            }
+
+            pCertificate.style.display = "block"; 
+        });
 
         document.querySelector('#btn').addEventListener('click', function () {
             var drmVendorValue = drmVendor.options[drmVendor.selectedIndex].value;
@@ -55,14 +66,14 @@
             srcObj = {
                 src: src,
                 type: type,
+                autoplay: autoplay.checked,
                 keySystems: keySystems
             };
-
 
             console.log("src object", srcObj);
 
             player.src(srcObj);
-            player.play();
+            // player.play();
         });
     </script>
 </body>
